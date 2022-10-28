@@ -11,4 +11,4 @@
 3. Now, install dependencies using `requirements.txt` file
 `python3 -m pip install -r requirements.txt`
 
-4. Launch notebook `jupyter notebook` or run through CLI
+4. Collect repositories data from github `python3 sourcing/collect.py`

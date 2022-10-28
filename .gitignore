@@ -1,6 +1,6 @@
 
 mozilla_env/
-
+.DS_Store
 *.csv
 *.xlsx
 *.pkl
