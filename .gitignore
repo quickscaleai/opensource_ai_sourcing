@@ -4,3 +4,4 @@ mozilla_env/
 *.csv
 *.xlsx
 *.pkl
+*.env

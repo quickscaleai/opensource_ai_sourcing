@@ -5,16 +5,18 @@ import os
 
 from config import (
     GITHUB_REPO_FILEPATH, TAXONOMY, REPOSITORY, ATTRIBUTES, 
-    OWNER,ORGANIZATION, GITHUB_DATA, PREFIX, C_REPO_ID
+    OWNER,ORGANIZATION, GITHUB_DATA, PREFIX, C_REPO_ID, C_REPO_LAST_MODIFIED,
+    GITHUB_TOKEN 
 )
 
+#TODO:  Collect repo main contributor if it comes from organiezation
 
 LIMIT_PER_QUERY = 10
 N_TOP_CANDIDATES_PER_QUERY = 250
 
 class GithubCollector(): 
     def __init__(self) -> None:
-        self.github = Github("") # ACCESS TOKEN
+        self.github = Github(GITHUB_TOKEN) # ACCESS TOKEN
     
     @property
     def rate_limit(self):
@@ -25,6 +27,7 @@ class GithubCollector():
         """Pre-collected repositories"""
         def cast(repositories):
             repositories.repo_created_at = pd.to_datetime(repositories.repo_created_at)
+            repositories[C_REPO_LAST_MODIFIED] = pd.to_datetime(repositories[C_REPO_LAST_MODIFIED]).dt.tz_localize(None)
             return repositories
 
         repositories = pd.read_csv(GITHUB_REPO_FILEPATH, delimiter=",", index_col=0)
@@ -37,6 +40,7 @@ class GithubCollector():
         """Collect data from Github""" 
         data = pd.DataFrame()
         repo_ids = self._get_repo_ids(self.github_repositories)
+        print("nb initial repo", len(repo_ids))
         for taxo_category, queries in TAXONOMY.items():
             for query in queries[:LIMIT_PER_QUERY]:
                 print(query)
@@ -58,7 +62,7 @@ class GithubCollector():
                 repo_ids.update(self._get_repo_ids(data))
         return data
     
-    def _get_repo_ids(self, repositories: pd.DataFrame) -> {str:None}:
+    def _get_repo_ids(self, repositories: pd.DataFrame):
         if repositories is None:
             repo_ids = []
         else: 
@@ -92,8 +96,6 @@ class GithubCollector():
         return pd.DataFrame(data, columns=self.get_dataset_column_names())
 
 
-if __name__ == '__main__':
-
     def consolidate_data(old_data, new_data):
         if old_data.shape[1] != new_data.shape[1]:
             print("can't concat check column shape")
@@ -101,6 +103,9 @@ if __name__ == '__main__':
 
     def save_repositories(repositories: pd.DataFrame) -> None:
         repositories.drop_duplicates(C_REPO_ID).to_csv(GITHUB_REPO_FILEPATH)
+
+if __name__ == '__main__':
+
 
     g = GithubCollector()
     print(g.rate_limit)

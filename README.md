@@ -12,3 +12,5 @@
 `python3 -m pip install -r requirements.txt`
 
 4. Collect repositories data from github `python3 sourcing/collect.py`
+
+5. Score repositories `python3 sourcing/score   .py`

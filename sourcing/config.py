@@ -5,6 +5,7 @@ GITHUB_TOKEN = "YOUR TOKEN HERE"
 
 # FILES
 GITHUB_REPO_FILENAME = "query.save.csv"
+GITHUB_SCORE_FILENAME = "scores.save.csv"
 
 # DIRECTORIES
 SOURCE_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +14,8 @@ PROJECT_ROOT = os.path.join(SOURCE_ROOT, "../")
 # REPOSITORIES_FILEPATH = ...
 DATA_DIR = os.path.join(PROJECT_ROOT, "data/")
 GITHUB_REPO_FILEPATH = os.path.join(DATA_DIR, GITHUB_REPO_FILENAME)
+GITHUB_REPO_SCORE_FILEPATH = os.path.join(DATA_DIR, GITHUB_SCORE_FILENAME)
+
 # REPOSITORIES_FILEPATH = ...
 # REPOSITORIES_FILEPATH = ...
 
@@ -47,7 +50,7 @@ TAXONOMY = {
     MISUSE: [
         "AI misuse","Adversarial Attacks", 
         "Deep Fakes", "Fake News", "Arming Image Generation", "Machine Learning Model Misuse",
-        "Language Model misuse", "Prompt Engineering", "AI Safety"
+        "Language Model misuse", "Prompt engineering", "AI Safety"
     ],
     SUSTAINABILITY: [
         "AI sustainability", "Sustainable AI", "AI for Climate", "AI carbon emission", "ai power consumption",
@@ -92,6 +95,8 @@ GITHUB_DATA = {
 
 # COLUMNS
 C_REPO_ID = GITHUB_DATA[REPOSITORY][PREFIX] + "id"
+C_REPO_NAME = GITHUB_DATA[REPOSITORY][PREFIX] + "full_name"
 C_ORGA_NAME = GITHUB_DATA[ORGANIZATION][PREFIX] + "name"
 C_OWNER_NAME = GITHUB_DATA[OWNER][PREFIX] + "name"
 C_REPO_STARS = GITHUB_DATA[REPOSITORY][PREFIX] + "stargazers_count"
+C_REPO_LAST_MODIFIED = GITHUB_DATA[REPOSITORY][PREFIX] + "last_modified"
