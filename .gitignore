@@ -1,5 +1,6 @@
 
 mozilla_env/
+*.pyc
 .DS_Store
 *.csv
 *.xlsx

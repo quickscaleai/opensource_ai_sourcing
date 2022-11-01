@@ -1,6 +1,6 @@
-import os 
+import os
 
-# TOKEN 
+# TOKEN
 GITHUB_TOKEN = "YOUR TOKEN HERE"
 
 # FILES
@@ -31,34 +31,61 @@ ETHICS_AND_LEGAL = "Ethics of scale"
 
 TAXONOMY = {
     PRIVACY: [
-        "privacy", 
-        "data privacy", 
+        "privacy",
+        "data privacy",
         "data protection",
-        "differential privacy", 
-        "privacy attack", 
-        "privacy protection", 
-        "information security"
+        "differential privacy",
+        "privacy attack",
+        "privacy protection",
+        "information security",
     ],
     FAIRNESS: [
-        "fairness", "algorithmic bias", "bias in AI", "gender bias", "ethnicity bias", "sexual orientation bias",
-        "disability", "parity", "equality", "fairness learning"
+        "fairness",
+        "algorithmic bias",
+        "bias in AI",
+        "gender bias",
+        "ethnicity bias",
+        "sexual orientation bias",
+        "disability",
+        "parity",
+        "equality",
+        "fairness learning",
     ],
     TRANSPARENCY: [
-        "ai explainability", "Explainable AI", "AI interpretability", "Model interpretability", "transparency AI", "model explainability",
-        "transparency machine learning", 
+        "ai explainability",
+        "Explainable AI",
+        "AI interpretability",
+        "Model interpretability",
+        "transparency AI",
+        "model explainability",
+        "transparency machine learning",
     ],
     MISUSE: [
-        "AI misuse","Adversarial Attacks", 
-        "Deep Fakes", "Fake News", "Arming Image Generation", "Machine Learning Model Misuse",
-        "Language Model misuse", "Prompt engineering", "AI Safety"
+        "AI misuse",
+        "Adversarial Attacks",
+        "Deep Fakes",
+        "Fake News",
+        "Arming Image Generation",
+        "Machine Learning Model Misuse",
+        "Language Model misuse",
+        "Prompt engineering",
+        "AI Safety",
     ],
     SUSTAINABILITY: [
-        "AI sustainability", "Sustainable AI", "AI for Climate", "AI carbon emission", "ai power consumption",
+        "AI sustainability",
+        "Sustainable AI",
+        "AI for Climate",
+        "AI carbon emission",
+        "ai power consumption",
         "machine learning sustainability",
     ],
     ETHICS_AND_LEGAL: [
-        "Ethics of scale AI", "AI regulation", "AI Robots rights", "AI Legality", "ethics ai"
-    ]
+        "Ethics of scale AI",
+        "AI regulation",
+        "AI Robots rights",
+        "AI Legality",
+        "ethics ai",
+    ],
 }
 
 # CONSTANT NAMES
@@ -72,25 +99,72 @@ ATTRIBUTES = "attributes"
 GITHUB_DATA = {
     REPOSITORY: {
         PREFIX: "repo_",
-        ATTRIBUTES: ["id", "full_name", "stargazers_count", "watchers_count", "description",
-             "topics", "forks_count", "language", "visibility", "subscribers_count", "open_issues_count",
-             "created_at", "last_modified", "has_projects", "has_wiki", "has_downloads", "size", "raw_data"]
+        ATTRIBUTES: [
+            "id",
+            "full_name",
+            "stargazers_count",
+            "watchers_count",
+            "description",
+            "topics",
+            "forks_count",
+            "language",
+            "visibility",
+            "subscribers_count",
+            "open_issues_count",
+            "created_at",
+            "last_modified",
+            "has_projects",
+            "has_wiki",
+            "has_downloads",
+            "size",
+            "raw_data",
+        ],
     },
     OWNER: {
         PREFIX: "owner_",
         ATTRIBUTES: [
-            "id", "name", "login", "type", "bio", "company", "role", "email", "followers", "following", "location", "total_private_repos",
-            "public_repos", "team_count", "twitter_username", "created_at", "updated_at","raw_data"
-        ]
-        
+            "id",
+            "name",
+            "login",
+            "type",
+            "bio",
+            "company",
+            "role",
+            "email",
+            "followers",
+            "following",
+            "location",
+            "total_private_repos",
+            "public_repos",
+            "team_count",
+            "twitter_username",
+            "created_at",
+            "updated_at",
+            "raw_data",
+        ],
     },
     ORGANIZATION: {
         PREFIX: "orga_",
         ATTRIBUTES: [
-             "id", "name", "login", "type","description", "company", "email", "followers", "following", "location", "total_private_repos",
-            "public_repos", "collaborators", "created_at", "updated_at","blog", "raw_data"
-        ]
-    }
+            "id",
+            "name",
+            "login",
+            "type",
+            "description",
+            "company",
+            "email",
+            "followers",
+            "following",
+            "location",
+            "total_private_repos",
+            "public_repos",
+            "collaborators",
+            "created_at",
+            "updated_at",
+            "blog",
+            "raw_data",
+        ],
+    },
 }
 
 # COLUMNS
