@@ -9,9 +9,12 @@ from config import (
     C_REPOSITORY_ID,
     C_REPOSITORY_NAME,
     C_ORGANIZATION_ID,
+    C_ORGANIZATION_LOGIN,
     C_ORGANIZATION_NAME,
     C_OWNER_ID,
+    C_OWNER_LOGIN,
     C_OWNER_NAME,
+    
     GITHUB_SCORE_REPOSITORY_FILEPATH,
     GITHUB_SCORE_ORGANIZATION_FILEPATH,
     GITHUB_SCORE_OWNER_FILEPATH
@@ -82,15 +85,16 @@ def aggregate_score_per_level(repositories: pd.DataFrame) -> pd.DataFrame:
     """aggregate and store the scores for each levels"""
 
     level_mapping = {
-        GithubEntity.REPOSITORY: [C_REPOSITORY_ID, C_REPOSITORY_NAME],
-        GithubEntity.OWNER: [C_OWNER_ID, C_OWNER_NAME, C_IS_BIG_COMPANY],
-        GithubEntity.ORGANIZATION: [C_ORGANIZATION_ID, C_ORGANIZATION_NAME, C_IS_BIG_COMPANY],
+        GithubEntity.REPOSITORY: [C_REPOSITORY_ID, C_REPOSITORY_NAME, C_IS_BIG_COMPANY],
+        GithubEntity.OWNER: [C_OWNER_ID, C_OWNER_LOGIN, C_OWNER_NAME, C_IS_BIG_COMPANY],
+        GithubEntity.ORGANIZATION: [C_ORGANIZATION_ID, C_ORGANIZATION_LOGIN,C_ORGANIZATION_NAME, C_IS_BIG_COMPANY],
     }
     scores = {}
     for entity_level, group_columns in level_mapping.items():
         if entity_level == GithubEntity.REPOSITORY:
             scores[entity_level] = repositories[group_columns+[C_SCORE]]
         else:
+            repositories[group_columns] = repositories[group_columns].fillna("")
             scores[entity_level] = repositories.groupby(group_columns)[C_SCORE].sum().reset_index()
 
     return scores
