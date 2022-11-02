@@ -43,7 +43,7 @@ C_SCORE = "score"
 
 
 SCORE_FEATURES_WEIGHTS = {
-    "repo_stargazers_count": 20,
+    "repo_stargazers_count": 10,
     "is_priority_language": 5,
     "repo_forks_count": 5,
     "repo_open_issues_count": 5,
@@ -55,6 +55,7 @@ SCORE_FEATURES_WEIGHTS = {
     C_REPOSITORY_YEARS_SINCE_CREATION: -5,
     C_REPOSITORY_YEARS_SINCE_MODIFICATION: -5,
     C_REPOSITORY_CONTAINS_AI_KEYWORDS: 20,
+    C_IS_ABOVE_MIN_STARS: 20
 }
 
 
