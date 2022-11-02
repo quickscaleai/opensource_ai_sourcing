@@ -1,3 +1,4 @@
+from enum import Enum
 import numpy as np
 import pandas as pd
 import re
@@ -14,10 +15,9 @@ from config import (
     C_OWNER_ID,
     C_OWNER_LOGIN,
     C_OWNER_NAME,
-    
     GITHUB_SCORE_REPOSITORY_FILEPATH,
     GITHUB_SCORE_ORGANIZATION_FILEPATH,
-    GITHUB_SCORE_OWNER_FILEPATH
+    GITHUB_SCORE_OWNER_FILEPATH,
 )
 from features import (
     MIN_STARS,
@@ -26,6 +26,7 @@ from features import (
     C_IS_BIG_COMPANY,
     C_IS_PRIORITY_LANGUAGE,
     C_IS_ABOVE_MIN_STARS,
+    C_REPOSITORY_CONTAINS_AI_KEYWORDS,
     C_REPOSITORY_YEARS_SINCE_CREATION,
     C_REPOSITORY_YEARS_SINCE_MODIFICATION,
 )
@@ -53,7 +54,14 @@ SCORE_FEATURES_WEIGHTS = {
     # "orga_public_repos":1,
     C_REPOSITORY_YEARS_SINCE_CREATION: -5,
     C_REPOSITORY_YEARS_SINCE_MODIFICATION: -5,
+    C_REPOSITORY_CONTAINS_AI_KEYWORDS: 20,
 }
+
+
+class GithubEntity(Enum):
+    REPOSITORY = 1
+    OWNER = 2
+    ORGANIZATION = 3
 
 
 def _scale_features(X: pd.DataFrame, features) -> pd.DataFrame:
@@ -72,30 +80,28 @@ def score(repositories: pd.DataFrame, features_weights: Dict[str, int]) -> pd.Da
     return repositories.merge(X[["score"]], left_index=True, right_index=True)
 
 
-from enum import Enum
-
-
-class GithubEntity(Enum):
-    REPOSITORY = 1
-    OWNER = 2
-    ORGANIZATION = 3
-
-
 def aggregate_score_per_level(repositories: pd.DataFrame) -> pd.DataFrame:
     """aggregate and store the scores for each levels"""
 
     level_mapping = {
         GithubEntity.REPOSITORY: [C_REPOSITORY_ID, C_REPOSITORY_NAME, C_IS_BIG_COMPANY],
         GithubEntity.OWNER: [C_OWNER_ID, C_OWNER_LOGIN, C_OWNER_NAME, C_IS_BIG_COMPANY],
-        GithubEntity.ORGANIZATION: [C_ORGANIZATION_ID, C_ORGANIZATION_LOGIN,C_ORGANIZATION_NAME, C_IS_BIG_COMPANY],
+        GithubEntity.ORGANIZATION: [
+            C_ORGANIZATION_ID,
+            C_ORGANIZATION_LOGIN,
+            C_ORGANIZATION_NAME,
+            C_IS_BIG_COMPANY,
+        ],
     }
     scores = {}
     for entity_level, group_columns in level_mapping.items():
         if entity_level == GithubEntity.REPOSITORY:
-            scores[entity_level] = repositories[group_columns+[C_SCORE]]
+            scores[entity_level] = repositories[group_columns + [C_SCORE]]
         else:
             repositories[group_columns] = repositories[group_columns].fillna("")
-            scores[entity_level] = repositories.groupby(group_columns)[C_SCORE].sum().reset_index()
+            scores[entity_level] = (
+                repositories.groupby(group_columns)[C_SCORE].sum().reset_index()
+            )
 
     return scores
 

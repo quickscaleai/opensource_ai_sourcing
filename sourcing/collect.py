@@ -35,7 +35,7 @@ class GithubCollector:
         def cast(repositories):
             repositories.repo_created_at = pd.to_datetime(repositories.repo_created_at)
             repositories[C_REPOSITORY_LAST_MODIFIED] = pd.to_datetime(
-                repositories[C_REPOSITORY_LAST_MODIFIED]
+                repositories[C_REPOSITORY_LAST_MODIFIED], utc=True
             ).dt.tz_localize(None)
             return repositories
 
@@ -53,7 +53,9 @@ class GithubCollector:
             for query in queries[:LIMIT_PER_QUERY]:
                 print(query)
 
-                repositories = self.github.search_repositories(query=query)
+                repositories = self.github.search_repositories(
+                    query=query + "+in:readme+in:description"
+                )
                 try:
                     current_repos = self._collect_data_from_repositories(
                         repositories, repo_ids=repo_ids
@@ -88,7 +90,10 @@ class GithubCollector:
         self, repositories, github_data=GITHUB_DATA, repo_ids={}
     ):
         def create_record(entity, properties: list) -> list:
-            """return a list of properties contained in the entity passed in parameter"""
+            """
+            return a list of properties contained in the entity passed in parameter
+
+            """
             return [getattr(entity, property_) for property_ in properties]
 
         data = []
