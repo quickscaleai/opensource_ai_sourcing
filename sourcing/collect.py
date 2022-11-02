@@ -2,7 +2,7 @@ from github import Github
 import pandas as pd
 
 from config import (
-    GITHUB_REPO_FILEPATH,
+    GITHUB_REPOSITORY_FILEPATH,
     TAXONOMY,
     REPOSITORY,
     ATTRIBUTES,
@@ -10,8 +10,8 @@ from config import (
     ORGANIZATION,
     GITHUB_DATA,
     PREFIX,
-    C_REPO_ID,
-    C_REPO_LAST_MODIFIED,
+    C_REPOSITORY_ID,
+    C_REPOSITORY_LAST_MODIFIED,
     GITHUB_TOKEN,
 )
 
@@ -34,12 +34,14 @@ class GithubCollector:
 
         def cast(repositories):
             repositories.repo_created_at = pd.to_datetime(repositories.repo_created_at)
-            repositories[C_REPO_LAST_MODIFIED] = pd.to_datetime(
-                repositories[C_REPO_LAST_MODIFIED]
+            repositories[C_REPOSITORY_LAST_MODIFIED] = pd.to_datetime(
+                repositories[C_REPOSITORY_LAST_MODIFIED]
             ).dt.tz_localize(None)
             return repositories
 
-        repositories = pd.read_csv(GITHUB_REPO_FILEPATH, delimiter=",", index_col=0)
+        repositories = pd.read_csv(
+            GITHUB_REPOSITORY_FILEPATH, delimiter=",", index_col=0
+        )
         return cast(repositories)
 
     def collect(self):
@@ -93,7 +95,6 @@ class GithubCollector:
         for repo in repositories[:N_TOP_CANDIDATES_PER_QUERY]:
             repo_id = repo.id
             if repo_id in repo_ids:
-                #            print(repo_id,"already collected")
                 continue
             repo_data = create_record(repo, github_data[REPOSITORY].get(ATTRIBUTES))
             owner_data = create_record(repo.owner, github_data[OWNER].get(ATTRIBUTES))
@@ -117,7 +118,7 @@ def consolidate_data(old_data, new_data):
 
 
 def save_repositories(repositories: pd.DataFrame) -> None:
-    repositories.drop_duplicates(C_REPO_ID).to_csv(GITHUB_REPO_FILEPATH)
+    repositories.drop_duplicates(C_REPOSITORY_ID).to_csv(GITHUB_REPOSITORY_FILEPATH)
 
 
 if __name__ == "__main__":

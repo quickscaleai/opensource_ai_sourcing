@@ -11,6 +11,7 @@
 3. Now, install dependencies using `requirements.txt` file
 `python3 -m pip install -r requirements.txt`
 
-4. Collect repositories data from github `python3 sourcing/collect.py`
+4. Collect repositories data from github `python3 sourcing/collect.py` OR 
+    Put the existing data in `DATA_DIR` folder the data should be named like defined in `GITHUB_REPO_FILENAME`
 
 5. Score repositories `python3 sourcing/score   .py`
